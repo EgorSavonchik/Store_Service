@@ -2,6 +2,7 @@ package com.test.testproject.controller;
 
 import com.test.testproject.dto.store.StoreDTO;
 import com.test.testproject.model.Store;
+import com.test.testproject.repository.StoreRepository;
 import com.test.testproject.service.StoreService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -50,11 +51,9 @@ public class StoreController
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateStore(@RequestBody @Valid StoreDTO request,
-                                             @PathVariable Integer id)
+    public ResponseEntity<StoreDTO> updateStore(@RequestBody @Valid StoreDTO request,
+                                                       @PathVariable Integer id)
     {
-        storeService.update(id, request);
-
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(storeService.update(id, request));
     }
 }

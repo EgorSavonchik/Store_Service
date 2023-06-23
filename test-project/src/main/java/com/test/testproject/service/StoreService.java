@@ -1,6 +1,7 @@
 package com.test.testproject.service;
 
 import com.test.testproject.dto.store.StoreDTO;
+import com.test.testproject.exeption.EntityNotFoundException;
 import com.test.testproject.model.Store;
 import com.test.testproject.repository.StoreRepository;
 import org.modelmapper.ModelMapper;
@@ -24,18 +25,20 @@ public class StoreService
     @Transactional
     public void create(StoreDTO storeDTO)
     {
-        Store newStore = mapper.map(storeDTO, Store.class); // !!
+        Store newStore = mapper.map(storeDTO, Store.class);
 
         storeRepository.save(newStore);
     }
 
     @Transactional
-    public void update(Integer id, StoreDTO storeDTO)
+    public StoreDTO update(Integer id, StoreDTO storeDTO)
     {
-        Store updatedStore = mapper.map(storeDTO, Store.class); // !!
+        storeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Store not found"));
+
+        Store updatedStore = mapper.map(storeDTO, Store.class);
         updatedStore.setId(id);
 
-        storeRepository.save(updatedStore);
+        return mapper.map(storeRepository.save(updatedStore), StoreDTO.class);
     }
 
     @Transactional
@@ -53,6 +56,6 @@ public class StoreService
     @Transactional(readOnly = true)
     public Store getById(Integer id)
     {
-        return storeRepository.findById(id).orElse(null); // !!
+        return storeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Store not found"));
     }
 }

@@ -1,6 +1,8 @@
 package com.test.testproject.service;
 
 import com.test.testproject.dto.product.ProductRequest;
+import com.test.testproject.dto.product.ProductResponse;
+import com.test.testproject.exeption.EntityNotFoundException;
 import com.test.testproject.model.Product;
 import com.test.testproject.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
@@ -28,19 +30,21 @@ public class ProductService
     public void create(ProductRequest request)
     {
         Product newProduct = mapper.map(request, Product.class);
-        newProduct.setStore(storeService.getById(request.getStoreId())); // !!
+        newProduct.setStore(storeService.getById(request.getStoreId()));
 
         productRepository.save(newProduct);
     }
 
     @Transactional
-    public void update(Integer id, ProductRequest request)
+    public ProductResponse update(Integer id, ProductRequest request)
     {
+        productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Product not found"));
+
         Product updatedProduct = mapper.map(request, Product.class);
-        updatedProduct.setStore(storeService.getById(request.getStoreId())); // !!
+        updatedProduct.setStore(storeService.getById(request.getStoreId()));
         updatedProduct.setId(id);
 
-        productRepository.save(updatedProduct);
+        return mapper.map(productRepository.save(updatedProduct), ProductResponse.class);
     }
 
     @Transactional
@@ -50,14 +54,16 @@ public class ProductService
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> getAll(Pageable pageable)
+    public Page<ProductResponse> getAll(Pageable pageable)
     {
-        return productRepository.findAll(pageable);
+        return productRepository.findAll(pageable).map(obj -> mapper.map(obj, ProductResponse.class));
     }
 
     @Transactional(readOnly = true)
-    public Product getById(Integer id)
+    public ProductResponse getById(Integer id)
     {
-        return productRepository.findById(id).orElse(null); // !!
+        return mapper.map(
+                productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Product not found")),
+                ProductResponse.class);
     }
 }

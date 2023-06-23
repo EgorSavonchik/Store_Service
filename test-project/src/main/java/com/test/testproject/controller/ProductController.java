@@ -1,6 +1,7 @@
 package com.test.testproject.controller;
 
 import com.test.testproject.dto.product.ProductRequest;
+import com.test.testproject.dto.product.ProductResponse;
 import com.test.testproject.model.Product;
 import com.test.testproject.service.ProductService;
 import jakarta.validation.Valid;
@@ -22,13 +23,13 @@ public class ProductController
     }
 
     @GetMapping("/")
-    public ResponseEntity<Page<Product>> getAllProducts(Pageable pageable)
+    public ResponseEntity<Page<ProductResponse>> getAllProducts(Pageable pageable)
     {
         return ResponseEntity.ok(productService.getAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Integer id)
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Integer id)
     {
         return ResponseEntity.ok(productService.getById(id));
     }
@@ -50,11 +51,9 @@ public class ProductController
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@RequestBody @Valid ProductRequest request,
+    public ResponseEntity<ProductResponse> update(@RequestBody @Valid ProductRequest request,
                                              @PathVariable Integer id)
     {
-        productService.update(id, request);
-
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(productService.update(id, request));
     }
 }

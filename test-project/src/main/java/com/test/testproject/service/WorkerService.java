@@ -1,6 +1,8 @@
 package com.test.testproject.service;
 
 import com.test.testproject.dto.worker.WorkerRequest;
+import com.test.testproject.dto.worker.WorkerResponse;
+import com.test.testproject.exeption.EntityNotFoundException;
 import com.test.testproject.model.Worker;
 import com.test.testproject.repository.StoreRepository;
 import com.test.testproject.repository.WorkerRepository;
@@ -25,22 +27,24 @@ public class WorkerService
     }
 
     @Transactional
-    public void create(WorkerRequest request) // !!
+    public void create(WorkerRequest request) 
     {
         Worker newWorker = mapper.map(request, Worker.class);
-        newWorker.setPlaceOfWork(storeRepository.findById(request.getPlaceOfWorkId()).orElse(null)); // !!
+        newWorker.setPlaceOfWork(storeRepository.findById(request.getPlaceOfWorkId()).orElse(null));
 
         workerRepository.save(newWorker);
     }
 
     @Transactional
-    public void update(Integer id, WorkerRequest request)
+    public WorkerResponse update(Integer id, WorkerRequest request)
     {
+        workerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Worker not found"));
+
         Worker updatedWorker = mapper.map(request, Worker.class);
-        updatedWorker.setPlaceOfWork(storeRepository.findById(request.getPlaceOfWorkId()).orElse(null)); // !!
+        updatedWorker.setPlaceOfWork(storeRepository.findById(request.getPlaceOfWorkId()).orElse(null));
         updatedWorker.setId(id);
 
-        workerRepository.save(updatedWorker);
+        return mapper.map(workerRepository.save(updatedWorker), WorkerResponse.class);
     }
 
     @Transactional
@@ -50,14 +54,16 @@ public class WorkerService
     }
 
     @Transactional(readOnly = true)
-    public Page<Worker> getAll(Pageable pageable)
+    public Page<WorkerResponse> getAll(Pageable pageable)
     {
-        return workerRepository.findAll(pageable);
+        return workerRepository.findAll(pageable).map(obj -> mapper.map(obj, WorkerResponse.class));
     }
 
     @Transactional(readOnly = true)
-    public Worker getById(Integer id)
+    public WorkerResponse getById(Integer id)
     {
-        return workerRepository.findById(id).orElse(null); // !!
+        return mapper.map(
+                workerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Worker not found"))
+                , WorkerResponse.class);
     }
 }

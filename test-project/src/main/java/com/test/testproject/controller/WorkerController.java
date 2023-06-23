@@ -1,6 +1,7 @@
 package com.test.testproject.controller;
 
 import com.test.testproject.dto.worker.WorkerRequest;
+import com.test.testproject.dto.worker.WorkerResponse;
 import com.test.testproject.model.Worker;
 import com.test.testproject.service.WorkerService;
 import jakarta.validation.Valid;
@@ -22,13 +23,13 @@ public class WorkerController
     }
 
     @GetMapping("/")
-    public ResponseEntity<Page<Worker>> getAllWorkers(Pageable pageable)
+    public ResponseEntity<Page<WorkerResponse>> getAllWorkers(Pageable pageable)
     {
         return ResponseEntity.ok(workerService.getAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Worker> getWorkerById(@PathVariable Integer id)
+    public ResponseEntity<WorkerResponse> getWorkerById(@PathVariable Integer id)
     {
         return ResponseEntity.ok(workerService.getById(id));
     }
@@ -50,11 +51,9 @@ public class WorkerController
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@RequestBody @Valid WorkerRequest request,
+    public ResponseEntity<WorkerResponse> update(@RequestBody @Valid WorkerRequest request,
                                              @PathVariable Integer id)
     {
-        workerService.update(id, request);
-
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(workerService.update(id, request));
     }
 }

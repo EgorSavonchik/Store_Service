@@ -26,5 +26,5 @@ public class Product
 
     private Integer price;
 
-
+    private String producer;
 }

@@ -1,7 +1,6 @@
 package com.test.testproject.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,9 @@ public class Worker
     @JoinColumn(name = "store_id")
     private Store placeOfWork;
 
-    private String name;
+    private String firstName;
+
+    private String lastName;
 
     private Integer age;
 

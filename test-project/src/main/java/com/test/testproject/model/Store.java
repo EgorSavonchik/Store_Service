@@ -21,7 +21,9 @@ public class Store
 
     private String address;
 
-    private Boolean delivery_availability;
+    private Boolean deliveryAvailability;
+
+    private String contactNumber;
 
     private String owner;
 }

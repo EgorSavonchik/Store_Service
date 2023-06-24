@@ -48,14 +48,16 @@ public class StoreService
     }
 
     @Transactional(readOnly = true)
-    public Page<Store> getAll(Pageable pageable)
+    public Page<StoreDTO> getAll(Pageable pageable)
     {
-        return storeRepository.findAll(pageable);
+        return storeRepository.findAll(pageable).map(obj -> mapper.map(obj, StoreDTO.class));
     }
 
     @Transactional(readOnly = true)
-    public Store getById(Integer id)
+    public StoreDTO getById(Integer id)
     {
-        return storeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Store not found"));
+        return mapper.map(storeRepository
+                .findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Store not found")),
+                StoreDTO.class);
     }
 }

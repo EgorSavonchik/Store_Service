@@ -23,13 +23,13 @@ public class StoreController
     }
 
     @GetMapping("/")
-    public ResponseEntity<Page<Store>> getAllStores(Pageable pageable)
+    public ResponseEntity<Page<StoreDTO>> getAllStores(Pageable pageable)
     {
         return ResponseEntity.ok(storeService.getAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Store> getStoreById(@PathVariable Integer id)
+    public ResponseEntity<StoreDTO> getStoreById(@PathVariable Integer id)
     {
         return ResponseEntity.ok(storeService.getById(id));
     }

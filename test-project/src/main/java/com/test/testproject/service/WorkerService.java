@@ -27,7 +27,7 @@ public class WorkerService
     }
 
     @Transactional
-    public void create(WorkerRequest request) 
+    public void create(WorkerRequest request)
     {
         Worker newWorker = mapper.map(request, Worker.class);
         newWorker.setPlaceOfWork(storeRepository.findById(request.getPlaceOfWorkId()).orElse(null));

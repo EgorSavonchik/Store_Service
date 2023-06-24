@@ -5,6 +5,7 @@ import com.test.testproject.dto.product.ProductResponse;
 import com.test.testproject.exeption.EntityNotFoundException;
 import com.test.testproject.model.Product;
 import com.test.testproject.repository.ProductRepository;
+import com.test.testproject.repository.StoreRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,20 +18,21 @@ public class ProductService
 {
     private final ProductRepository productRepository;
     private final ModelMapper mapper;
-    private final StoreService storeService;
+    private final StoreRepository storeRepository;
 
-    public ProductService(ProductRepository productRepository, ModelMapper mapper, StoreService storeService)
+    public ProductService(ProductRepository productRepository, ModelMapper mapper, StoreRepository storeRepository)
     {
         this.productRepository = productRepository;
         this.mapper = mapper;
-        this.storeService = storeService;
+        this.storeRepository = storeRepository;
     }
 
     @Transactional
     public void create(ProductRequest request)
     {
         Product newProduct = mapper.map(request, Product.class);
-        newProduct.setStore(storeService.getById(request.getStoreId()));
+        newProduct.setStore(storeRepository.findById(request.getStoreId()).orElseThrow(() ->
+                new EntityNotFoundException(request.getStoreId(), "Store not found")));
 
         productRepository.save(newProduct);
     }
@@ -41,7 +43,8 @@ public class ProductService
         productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id, "Product not found"));
 
         Product updatedProduct = mapper.map(request, Product.class);
-        updatedProduct.setStore(storeService.getById(request.getStoreId()));
+        updatedProduct.setStore(storeRepository.findById(request.getStoreId()).orElseThrow(() ->
+                new EntityNotFoundException(request.getStoreId(), "Store not found")));
         updatedProduct.setId(id);
 
         return mapper.map(productRepository.save(updatedProduct), ProductResponse.class);

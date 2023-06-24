@@ -21,7 +21,6 @@
 # Запуск приложения
 * Склонировать гит репозиторий(git clone https://github.com/EgorSavonchik/Store_Service/).
 * Запустить Docker Desktop(если запуск выполняется на Windows).
-* Запустить PostgreSQL на компьютере.
 * Ввести свои данные для входа от PostgreSQl(имя пользователя и пароль в соответствующие поля: POSTGRES_USER, POSTGRES_PASSWORD) в [compose.yaml](https://github.com/EgorSavonchik/Store_Service/blob/main/test-project/compose.yaml).
 * Перейти в папку Store_Service\test-project(cd Store_Service, потом cd test-project).
 * Выполнить команду mvn compile.

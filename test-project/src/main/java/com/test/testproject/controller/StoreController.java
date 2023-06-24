@@ -1,6 +1,8 @@
 package com.test.testproject.controller;
 
+import com.test.testproject.dto.product.ProductResponse;
 import com.test.testproject.dto.store.StoreDTO;
+import com.test.testproject.dto.worker.WorkerResponse;
 import com.test.testproject.service.StoreService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class StoreController
 {
     private final StoreService storeService;
-
     public StoreController(StoreService storeService)
     {
         this.storeService = storeService;
@@ -53,5 +54,17 @@ public class StoreController
                                                        @PathVariable Integer id)
     {
         return ResponseEntity.ok(storeService.update(id, request));
+    }
+
+    @GetMapping("/{id}/products")
+    public ResponseEntity<Page<ProductResponse>> getStoreProducts(@PathVariable Integer id, Pageable pageable)
+    {
+        return ResponseEntity.ok(storeService.getStoreProducts(id, pageable));
+    }
+
+    @GetMapping("/{id}/workers")
+    public ResponseEntity<Page<WorkerResponse>> getStoreWorkers(@PathVariable Integer id, Pageable pageable)
+    {
+        return ResponseEntity.ok(storeService.getStoreWorkers(id, pageable));
     }
 }

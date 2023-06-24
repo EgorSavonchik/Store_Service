@@ -2,7 +2,6 @@ package com.test.testproject.controller;
 
 import com.test.testproject.dto.worker.WorkerRequest;
 import com.test.testproject.dto.worker.WorkerResponse;
-import com.test.testproject.model.Worker;
 import com.test.testproject.service.WorkerService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

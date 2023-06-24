@@ -1,8 +1,6 @@
 package com.test.testproject.controller;
 
 import com.test.testproject.dto.store.StoreDTO;
-import com.test.testproject.model.Store;
-import com.test.testproject.repository.StoreRepository;
 import com.test.testproject.service.StoreService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

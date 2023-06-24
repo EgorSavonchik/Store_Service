@@ -1,6 +1,5 @@
 package com.test.testproject.dto.product;
 
-import com.test.testproject.model.Store;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

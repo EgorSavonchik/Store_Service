@@ -2,7 +2,6 @@ package com.test.testproject.controller;
 
 import com.test.testproject.dto.product.ProductRequest;
 import com.test.testproject.dto.product.ProductResponse;
-import com.test.testproject.model.Product;
 import com.test.testproject.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

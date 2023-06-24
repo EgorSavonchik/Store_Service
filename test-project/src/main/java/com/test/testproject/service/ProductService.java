@@ -30,9 +30,12 @@ public class ProductService
     @Transactional
     public void create(ProductRequest request)
     {
-        Product newProduct = mapper.map(request, Product.class);
+        Product newProduct = mapper.map(request, Product.class); // маппер не правильно отображает id, workOfPlaceId отображается в id
+
         newProduct.setStore(storeRepository.findById(request.getStoreId()).orElseThrow(() ->
                 new EntityNotFoundException(request.getStoreId(), "Store not found")));
+        newProduct.setId(null);
+
 
         productRepository.save(newProduct);
     }

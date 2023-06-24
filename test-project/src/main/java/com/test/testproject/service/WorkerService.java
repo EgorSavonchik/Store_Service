@@ -31,6 +31,7 @@ public class WorkerService
     {
         Worker newWorker = mapper.map(request, Worker.class);
         newWorker.setPlaceOfWork(storeRepository.findById(request.getPlaceOfWorkId()).orElse(null));
+        newWorker.setId(null);
 
         workerRepository.save(newWorker);
     }
